@@ -17,11 +17,21 @@ using System.Threading.Tasks;
 
 namespace MISA.ImportDemo.Core.Services
 {
+    /// <summary>
+    /// Quản lý nghiệp vụ riêng của khách hàng
+    /// </summary>
+    /// CreatedBy: NGDUONG (05/06/2021)
     public class ImportCustomerService : BaseImportService, IImportCustomerService
     {
         #region DECLARE
         #endregion
+
         #region CONSTRUCTOR
+        /// <summary>
+        /// Hàm khởi tạo
+        /// </summary>
+        /// <param name="importRepository">Thực thi nhiệm vụ lớp Repository</param>
+        /// <param name="importMemoryCache">Danh sách các Lớp lưu trong Cache</param>
         public ImportCustomerService(IImportCustomerRepository importRepository, IMemoryCache importMemoryCache) : base(importRepository, importMemoryCache, "Customer")
         {
             //EntitiesFromDatabase = GetListProfileBookDetailsByProfileBookId().Cast<object>().ToList();
@@ -82,7 +92,7 @@ namespace MISA.ImportDemo.Core.Services
         /// <param name="entity">thực thể hiện tại</param>
         /// <param name="cellValue">Giá trị nhập trong ô excel đang đọc</param>
         /// <param name="importColumn">Thông tin cột nhập khẩu (tiêu đề cột, kiểu giá trị....)</param>
-        /// CreatedBy: NVMANH (19/06/2020)
+        /// CreatedBy: NGDUONG (05/06/2021)
         protected override void CheckDuplicateData<T>(List<T> entitiesInFile, T entity, object cellValue, ImportColumn importColumn)
         {
             if (entity is Customer)
@@ -165,7 +175,9 @@ namespace MISA.ImportDemo.Core.Services
             {
                 var customerRecommend = entity as CustomerRecommend;
                 var customerCode = customerRecommend.CustomerCode;
+                // Kiểm tra trùng dữ liệu trên db
                 var customerMaster = _entitiesFromEXCEL.Cast<Customer>().Where(pbd => pbd.CustomerCode == customerCode).FirstOrDefault();
+                // Nếu trùng thì thêm vào khách hàng giới thiệu
                 if (customerMaster != null && customerCode != null)
                 {
                     customerRecommend.CustomerCode = customerMaster.CustomerCode;
@@ -184,56 +196,6 @@ namespace MISA.ImportDemo.Core.Services
             }
             base.ProcessDataAfterBuild<T>(entity);
         }
-
-        ///// <summary>
-        ///// Xử lý đặc thù với các thông tin lấy trên tệp nhập khẩu ở dạng lựa chọn thông tin ở 1 danh mục trong database
-        ///// </summary>
-        ///// <typeparam name="T">kiểu của thực thể đang build</typeparam>
-        ///// <param name="entity">thực thể</param>
-        ///// <param name="cellValue">giá trị của cell đọc được trên tệp</param>
-        ///// <param name="importColumn">thông tin cột nhập khẩu hiện tại được khai báo trong databse</param>
-        ///// OverriderBy: NVMANH (15/12/2020)
-        //protected override void ProcessCellValueByDataTypeWhenTableReference<T>(object entity, ref object cellValue, ImportColumn importColumn)
-        //{
-        //    var value = cellValue;
-        //    if (importColumn.ObjectReferenceName == "ParticipationForm" && entity is Customer)
-        //    {
-        //        //var listData = _importRepository.GetListObjectByTableName("ParticipationForm").Result.Cast<ParticipationForm>().ToList();
-        //        //var par = listData.Where(e => e.Rate == decimal.Parse(value.ToString().Replace(",","."))).FirstOrDefault();
-        //        //if (par == null)
-        //        //    return;
-        //        //(entity as Employee).ParticipationFormId = par.ParticipationFormId;
-        //        //(entity as Employee).ParticipationFormName = par.ParticipationFormName;
-        //    }
-        //    else
-        //    {
-        //        base.ProcessCellValueByDataTypeWhenTableReference<T>(entity, ref cellValue, importColumn);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Xử lý đặc thù với các thông tin lấy trên tệp nhập khẩu ở dạng lựa chọn thông tin lưu trữ có kiểu là Enum (VD giới tính, tình trạng hôn nhân...)
-        ///// </summary>
-        ///// <typeparam name="T">kiểu của thực thể đang build</typeparam>
-        ///// <param name="entity">thực thể</param>
-        ///// <param name="enumType">Kiểu của enum</param>
-        ///// <param name="cellValue">giá trị của cell đọc được trên tệp</param>
-        ///// <param name="importColumn">thông tin cột nhập khẩu hiện tại được khai báo trong databse</param>
-        ///// OverriderBy: NVMANH (15/12/2020)
-        //protected override void CustomAfterSetCellValueByColumnInsertWhenEnumReference<Y>(object entity, Y enumType, string columnInsert, ref object cellValue)
-        //{
-        //    if (columnInsert == "ResidentialAreaType")
-        //    {
-        //        //var employee = entity as Employee;
-        //        //var enumPropertyName = (ResidentialAreaType)cellValue;
-        //        //employee.ResidentialAreaName = Resources.ResourceManager.GetString(string.Format("Enum_ResidentialAreaType_{0}", enumPropertyName));
-        //    }
-        //    else
-        //    {
-        //        base.CustomAfterSetCellValueByColumnInsertWhenEnumReference<Y>(entity, enumType, columnInsert, ref cellValue);
-        //    }
-
-        //}
 
         /// <summary>
         /// Xử lý dữ liệu liên quan đến ngày/ tháng

@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace MISA.ImportDemo.Core.Interfaces.Service
 {
+    /// <summary>
+    /// Sử lý nghiệp vụ của khách hàng
+    /// </summary>
+    /// CreatedBy: NGDUONG (05/06/2021)
     public interface IImportCustomerService : IImportService
     {
         /// <summary>
@@ -16,7 +20,7 @@ namespace MISA.ImportDemo.Core.Interfaces.Service
         /// <param name="formFile">Tệp nhập khẩu</param>
         /// <param name="cancellationToken">tham số custome phục vụ hủy Token khi cần thiết</param>
         /// <returns>Ok: nếu đọc thành công; 400: nếu có lỗi validate</returns>
-        /// CreatedBy: NVMANH (10.10.2020)
+        /// CreatedBy: NGDUONG (05/06/2021)
         Task<ActionServiceResult> ReadCustomerDataFromExcel(IFormFile formFile, CancellationToken cancellationToken);
     }
 }

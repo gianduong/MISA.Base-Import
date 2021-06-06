@@ -25,9 +25,7 @@ namespace MISA.ImportDemo.Infrastructure.Data.Repositories
         #region CONSTRUCTOR
         public ImportCustomerRepository(IEntityRepository entityRepository, IMemoryCache importMemoryCache) : base(entityRepository, importMemoryCache)
         {
-
         }
-
         #endregion
 
         #region Method
@@ -58,7 +56,6 @@ namespace MISA.ImportDemo.Infrastructure.Data.Repositories
                 dbContext.CustomerRecommend.AddRange(customer.CustomerRecommend);
                 dbContext.CustomerRecommend.RemoveRange(pbd);
             }
-            //dbContext.Customer.UpdateRange(modifiedEmployees);
             await dbContext.SaveChangesAsync();
             return new ActionServiceResult(true, Resources.Msg_ImportSuccess, MISACode.Success, customers);
         }
@@ -67,7 +64,7 @@ namespace MISA.ImportDemo.Infrastructure.Data.Repositories
         /// Lấy toàn bộ danh sách khách hàng theo công ty
         /// </summary>
         /// <returns>Danh sách khách hàng đang có trong công ty</returns>
-        /// CreatedBy: NVMANH (06/06/2021)
+        /// CreatedBy: NGDUONG (06/06/2021)
         public async Task<List<Customer>> GetCustomers()
         {
             //var currentOrganizationId = CommonUtility.GetCurrentOrganizationId();
